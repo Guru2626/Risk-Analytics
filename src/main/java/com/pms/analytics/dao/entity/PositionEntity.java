@@ -1,11 +1,13 @@
 package com.pms.analytics.dao.entity;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -20,12 +22,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PositionEntity {
 
-    @Id
-    @Column(name = "portfolio_id")
-    private UUID portfolioId;
-
-    @Column(name = "cusip_Id")
-    private String cusipId;
+    @EmbeddedId
+    private PositionKey id;
 
     @Column(name = "holdings")
     private Long holdings;
@@ -45,6 +43,20 @@ public class PositionEntity {
     @PreUpdate
     protected void onUpdate(){
         updatedAt = Instant.now();
+    }
+
+    @Embeddable
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PositionKey implements Serializable {
+
+        @Column(name = "portfolio_id")
+        private UUID portfolioId;
+
+        @Column(name = "cusip_Id")
+        private String cusipId;
+
     }
 
 }

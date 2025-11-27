@@ -1,11 +1,10 @@
 package com.pms.analytics.dao;
 
-import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.pms.analytics.dao.entity.PositionEntity;
+import com.pms.analytics.dao.entity.PositionEntity.PositionKey;
 
-public interface PositionDao extends JpaRepository<PositionEntity, UUID>{
+public interface PositionDao extends JpaRepository<PositionEntity, PositionKey>{
 
 }
