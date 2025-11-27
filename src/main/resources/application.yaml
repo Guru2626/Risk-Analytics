@@ -3,7 +3,7 @@ spring:
     name: analytics
 spring.jpa:
   database: POSTGRESQL
-  hibernate.ddl-auto: create-drop
+  hibernate.ddl-auto: create
   show-sql: true
 
 spring.datasource:
