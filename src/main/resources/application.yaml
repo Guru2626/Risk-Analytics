@@ -15,7 +15,6 @@ spring:
     username: postgres
     password: root
 
-
 finnhub:
   api:
     key: ${API_KEY}
