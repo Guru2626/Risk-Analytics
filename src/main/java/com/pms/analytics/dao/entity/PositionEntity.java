@@ -54,8 +54,8 @@ public class PositionEntity {
         @Column(name = "portfolio_id")
         private UUID portfolioId;
 
-        @Column(name = "cusip_Id")
-        private String cusipId;
+        @Column(name = "symbol")
+        private String symbol;
 
     }
 

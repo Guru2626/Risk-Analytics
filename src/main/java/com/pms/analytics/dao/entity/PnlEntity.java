@@ -32,8 +32,8 @@ public class PnlEntity {
     @Column(name = "portfolio_id")
     private UUID portfolioId;
 
-    @Column(name = "cusip_id")
-    private String cusipId;
+    @Column(name = "symbol")
+    private String symbol;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "side")
@@ -49,10 +49,10 @@ public class PnlEntity {
     private Instant timestamp;
 
     @Column(name = "realized_pnl")
-    private float realized_pnl;
+    private BigDecimal realizedPnl;
 
     @Column(name = "unrealized_pnl")
-    private float unrealized_pnl;
+    private BigDecimal unrealizedPnl;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

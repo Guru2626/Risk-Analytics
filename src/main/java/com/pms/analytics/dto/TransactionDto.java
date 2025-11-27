@@ -17,11 +17,11 @@ public class TransactionDto {
     private UUID transactionId; 
     private UUID tradeId;
     private UUID portfolioId;
-    private String cusipId;
+    private String symbol;
     private TradeSide side;
     private BigDecimal buyPrice;
     private BigDecimal sellPrice;
     private long quantity;
-    private float remainingQuantity;
+    private long remainingQuantity;
     private Instant timestamp;
 }
