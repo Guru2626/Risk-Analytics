@@ -30,6 +30,12 @@
 		<java.version>21</java.version>
 		<spring-cloud.version>2025.0.0</spring-cloud.version>
 	</properties>
+	<repositories>
+        <repository>
+            <id>confluent</id>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -62,12 +68,12 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-docker-compose</artifactId>-->
-<!--			<scope>runtime</scope>-->
-<!--			<optional>true</optional>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -102,6 +108,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+		<dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-protobuf-serializer</artifactId>
+            <version>7.6.0</version>
         </dependency>
 
 
@@ -146,6 +158,45 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+
+                <configuration>
+                    <addSources>true</addSources>
+                    <!-- Location of .proto files -->
+                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
+                    <testProtoSourceRoot>${project.basedir}/src/test/proto</testProtoSourceRoot>
+
+                    <!-- Where Java files will be generated -->
+                    <outputDirectory>
+                        ${project.build.directory}/generated-sources/protobuf/java
+                    </outputDirectory>
+                    <testOutputDirectory>
+                        ${project.build.directory}/generated-test-sources/protobuf/java
+                    </testOutputDirectory>
+
+                    <!-- Required for google/protobuf/timestamp.proto -->
+                    <includeStdTypes>true</includeStdTypes>
+
+                    <!-- Protoc version MUST match protobuf-java -->
+                    <protocArtifact>
+                        com.google.protobuf:protoc:3.25.3:exe:windows-x86_64
+                    </protocArtifact>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>compile-protobuf</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
