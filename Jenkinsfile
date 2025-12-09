@@ -2,40 +2,50 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-        PROJECT_NAME = 'analytics-app'
+        DOCKER_BUILDKIT = 1
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Pull the latest code from GitHub
-                git branch: 'main', url: 'https://github.com/Guru2626/Risk-Analytics'
+                checkout scm
             }
         }
 
         stage('Build Docker Images') {
             steps {
-                // Build your Docker images for the services
-                sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
+                script {
+                    // Use Docker Compose v2 commands, assuming it's installed on the host
+                    sh 'docker compose -f docker-compose.yml build'
+                }
             }
         }
 
         stage('Bring Up Services') {
             steps {
-                // Start all services in detached mode
-                sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
+                script {
+                    // Bringing up the services using docker compose v2
+                    sh 'docker compose -f docker-compose.yml up -d'
+                }
             }
         }
 
-    }
-
-    post {
-        success {
-            echo "Pipeline completed successfully!"
+        stage('Test Services') {
+            steps {
+                script {
+                    // Run tests or health checks on the services
+                    sh 'docker compose -f docker-compose.yml ps'
+                }
+            }
         }
-        failure {
-            echo "Pipeline failed. Check the logs."
+
+        stage('Teardown') {
+            steps {
+                script {
+                    // Tear down services after testing
+                    sh 'docker compose -f docker-compose.yml down'
+                }
+            }
         }
     }
 }
